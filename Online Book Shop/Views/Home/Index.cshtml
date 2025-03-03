@@ -1,0 +1,60 @@
+﻿@model BookDisplayModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="mx-3 my-4 mt-4">
+    <form asp-action="Index" class="row row-cols-lg-auto g-3 align-items-center">
+
+        <div class="col-12">
+            <label class="visually-hidden" for="genreId">Genres</label>
+            <select class="form-select" id="genreId" name="genreId">
+                <option selected>Choose Genre</option>
+                @foreach(var genre in Model.Genres){
+                    <option selected="@(genre.Id==Model.GenreId)" value="@genre.Id">@genre.GenreName</option>
+                    @* <option value="2">Science FictionThriller</option> *@
+                    @* <option value="3">Romance</option> *@
+                    @* <option value="4">Horror</option> *@
+                    @* <option value="5">Thriller</option> *@
+                    @* <option value="6">Mystery</option> *@
+                    @* <option value="7">Action</option> *@
+                }  
+            </select>
+        </div>
+        <div class="col-12">
+            <label class="visually-hidden" for="sTerm">Search by Book Title</label>
+            <div class="input-group">
+                <div class="input-group-text"></div>
+                <input type="text" class="form-control" id="sTerm"  value="@Model.STerm" name="sTerm" placeholder="Search by Book Title">
+            </div>
+        </div>
+
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Search</button>
+            <a href="/Home/Index" class="btn btn-primary">Reset</a>
+        </div>
+    </form>
+</div>
+<div class="w-100 mt-4 d-flex flex-wrap">
+
+    @foreach(var book in Model.Books){
+        <div class="card mx-3 mb-4" style="width: 18rem;">
+            @if (string.IsNullOrEmpty(book.BookImage))
+            {
+                <img style="width:100%; height:150px;" src="/images/No.jpg" class="card-img-top" alt="No Image">
+            }//https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1694122973i/195065300.jpg
+            else
+            {
+                <img style="width:100%; height:300px;" src="@book.BookImage" class="card-img-top" alt="Image">
+            }
+            <div class="card-body">
+                <h4 class="card-title"><b>Title: </b> @book.BookName</h4><hr/>
+            <p class="card-text">
+                    <b>Genre: </b>@book.GenreName <hr />
+                    <b>Author: </b>@book.AuthorName  <hr />
+                    <b>Price: </b>Rs.@book.Price
+            </p>
+            <a href="" class="btn btn-primary">Add to Cart </a>
+        </div>
+    </div>
+    }
+</div>
