@@ -40,7 +40,7 @@
         <div class="card mx-3 mb-4" style="width: 18rem;">
             @if (string.IsNullOrEmpty(book.BookImage))
             {
-                <img style="width:100%; height:150px;" src="/images/No.jpg" class="card-img-top" alt="No Image">
+                <img style="width:100%; height:300px;" src="/images/No.jpg" class="card-img-top" alt="No Image">
             }//https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1694122973i/195065300.jpg
             else
             {
@@ -53,8 +53,33 @@
                     <b>Author: </b>@book.AuthorName  <hr />
                     <b>Price: </b>Rs.@book.Price
             </p>
-            <a href="" class="btn btn-primary">Add to Cart </a>
+            <button type="button" onclick="add(@book.Id)" class="btn btn-primary">Add to Cart </button>
         </div>
     </div>
     }
 </div>
+@section Scripts{
+    <script>
+        // alert("Hello");
+        async function add(bookId){
+            var usernameElement= document.getElementById("username");
+        var username=usernameElement.innerText;
+        if(usernameElement==null){
+            window.location.href="/Identity/Account/Login";
+        }
+            try{
+                var response=await fetch(`/Cart/AddItem?bookId=${bookId}`);
+                if(response.status==200){
+                var result=await response.json();
+                console.log(result);
+                var cartCountElement=document.getElementById("cartCount");
+                cartCountElement.innerHTML=result;
+                window.location.href="#cartCount";
+                }
+            }
+            catch(err){
+                console.log(err)
+            }
+        }
+    </script>
+}
